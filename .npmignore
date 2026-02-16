@@ -1,0 +1,11 @@
+src/
+.github/
+.prettierrc
+eslint.config.js
+vitest.config.ts
+tsconfig.json
+CLAUDE.md
+coverage/
+*.test.ts
+*.spec.ts
+.reddit-token.json
