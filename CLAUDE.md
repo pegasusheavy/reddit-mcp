@@ -38,6 +38,15 @@ All Zod schemas live here: OAuth token responses, Reddit API response types (Thi
 - Reddit "fullnames" use type prefixes: `t1_` (comment), `t3_` (post), `t5_` (subreddit)
 - Tool names are prefixed `reddit_` with snake_case
 
+## Branching
+
+- **feature/bugfix branches** — all work starts on a `feature/*` or `bugfix/*` branch off `develop`
+- **develop** — integration branch; feature/bugfix branches merge here via PR
+- **release branches** — cut from `develop` as `release/*`, merged to `main` with a release workflow
+- **main** — production; only receives release branch merges
+
+Never commit directly to `main` or `develop`.
+
 ## Deployment
 
 Runs as a systemd user service (`mcp-reddit.service`) behind `mcp-proxy` on port 3012. Credentials in `~/.config/mcp-env/reddit.env`. MCP config entry in `~/.cursor/mcp.json` points to `http://localhost:3012/mcp`.
