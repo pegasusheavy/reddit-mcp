@@ -131,10 +131,13 @@ export class OAuthServer {
         }
       });
 
-      setTimeout(() => {
-        server.close();
-        reject(new Error('Authentication timeout after 5 minutes'));
-      }, 5 * 60 * 1000);
+      setTimeout(
+        () => {
+          server.close();
+          reject(new Error('Authentication timeout after 5 minutes'));
+        },
+        5 * 60 * 1000
+      );
     });
   }
 
@@ -175,7 +178,10 @@ export class OAuthServer {
   }
 
   private errorPage(error: string): string {
-    const safe = error.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c] || c);
+    const safe = error.replace(
+      /[&<>"']/g,
+      (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c] || c
+    );
     return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>Reddit Auth Failed</title>
 <style>body{font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#1a1a2e;color:#e0e0e0}.c{background:#16213e;padding:3rem;border-radius:16px;text-align:center;max-width:450px;box-shadow:0 8px 32px rgba(0,0,0,.4)}h1{color:#f87171;margin:0 0 1rem}p{color:#94a3b8;line-height:1.6}.e{background:#991b1b33;color:#fca5a5;padding:1rem;border-radius:8px;margin:1rem 0;font-family:monospace;font-size:.9rem}</style>

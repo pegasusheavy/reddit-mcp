@@ -11,7 +11,9 @@ function createMockClient(): RedditClient {
     search: vi.fn().mockResolvedValue({ kind: 'Listing', data: { children: [] } }),
     getSubredditInfo: vi.fn().mockResolvedValue({ kind: 't5', data: { display_name: 'test' } }),
     getUserInfo: vi.fn().mockResolvedValue({ kind: 't2', data: { name: 'testuser' } }),
-    createPost: vi.fn().mockResolvedValue({ json: { data: { id: 'abc123', url: 'https://reddit.com/r/test/abc123' } } }),
+    createPost: vi.fn().mockResolvedValue({
+      json: { data: { id: 'abc123', url: 'https://reddit.com/r/test/abc123' } },
+    }),
     reply: vi.fn().mockResolvedValue({ json: { data: { things: [{ data: { id: 'xyz789' } }] } } }),
     edit: vi.fn().mockResolvedValue({ json: { data: { things: [{ data: { id: 'xyz789' } }] } } }),
     delete: vi.fn().mockResolvedValue({}),
@@ -38,14 +40,18 @@ describe('RedditMCPServer', () => {
     const internalServer = (server as unknown as { server: Server }).server;
 
     // Use the server's request handler via the internal _requestHandlers map
-    const handlers = (internalServer as unknown as { _requestHandlers: Map<string, (req: unknown) => Promise<unknown>> })._requestHandlers;
+    const handlers = (
+      internalServer as unknown as {
+        _requestHandlers: Map<string, (req: unknown) => Promise<unknown>>;
+      }
+    )._requestHandlers;
     const listToolsHandler = handlers.get('tools/list');
 
     expect(listToolsHandler).toBeDefined();
 
-    const result = await listToolsHandler!({
+    const result = (await listToolsHandler!({
       method: 'tools/list',
-    }) as { tools: { name: string }[] };
+    })) as { tools: { name: string }[] };
 
     expect(result.tools).toHaveLength(10);
 
@@ -64,16 +70,20 @@ describe('RedditMCPServer', () => {
 
   it('should handle reddit_get_post tool call', async () => {
     const internalServer = (server as unknown as { server: Server }).server;
-    const handlers = (internalServer as unknown as { _requestHandlers: Map<string, (req: unknown) => Promise<unknown>> })._requestHandlers;
+    const handlers = (
+      internalServer as unknown as {
+        _requestHandlers: Map<string, (req: unknown) => Promise<unknown>>;
+      }
+    )._requestHandlers;
     const callToolHandler = handlers.get('tools/call');
 
-    const result = await callToolHandler!({
+    const result = (await callToolHandler!({
       method: 'tools/call',
       params: {
         name: 'reddit_get_post',
         arguments: { postId: 'abc123' },
       },
-    }) as { content: { type: string; text: string }[] };
+    })) as { content: { type: string; text: string }[] };
 
     expect(result.content).toHaveLength(1);
     expect(result.content[0].type).toBe('text');
@@ -82,7 +92,11 @@ describe('RedditMCPServer', () => {
 
   it('should handle reddit_search tool call', async () => {
     const internalServer = (server as unknown as { server: Server }).server;
-    const handlers = (internalServer as unknown as { _requestHandlers: Map<string, (req: unknown) => Promise<unknown>> })._requestHandlers;
+    const handlers = (
+      internalServer as unknown as {
+        _requestHandlers: Map<string, (req: unknown) => Promise<unknown>>;
+      }
+    )._requestHandlers;
     const callToolHandler = handlers.get('tools/call');
 
     await callToolHandler!({
@@ -103,7 +117,11 @@ describe('RedditMCPServer', () => {
 
   it('should handle reddit_create_post tool call', async () => {
     const internalServer = (server as unknown as { server: Server }).server;
-    const handlers = (internalServer as unknown as { _requestHandlers: Map<string, (req: unknown) => Promise<unknown>> })._requestHandlers;
+    const handlers = (
+      internalServer as unknown as {
+        _requestHandlers: Map<string, (req: unknown) => Promise<unknown>>;
+      }
+    )._requestHandlers;
     const callToolHandler = handlers.get('tools/call');
 
     await callToolHandler!({
@@ -127,7 +145,11 @@ describe('RedditMCPServer', () => {
 
   it('should handle reddit_vote tool call', async () => {
     const internalServer = (server as unknown as { server: Server }).server;
-    const handlers = (internalServer as unknown as { _requestHandlers: Map<string, (req: unknown) => Promise<unknown>> })._requestHandlers;
+    const handlers = (
+      internalServer as unknown as {
+        _requestHandlers: Map<string, (req: unknown) => Promise<unknown>>;
+      }
+    )._requestHandlers;
     const callToolHandler = handlers.get('tools/call');
 
     await callToolHandler!({
@@ -143,7 +165,11 @@ describe('RedditMCPServer', () => {
 
   it('should reject invalid parameters', async () => {
     const internalServer = (server as unknown as { server: Server }).server;
-    const handlers = (internalServer as unknown as { _requestHandlers: Map<string, (req: unknown) => Promise<unknown>> })._requestHandlers;
+    const handlers = (
+      internalServer as unknown as {
+        _requestHandlers: Map<string, (req: unknown) => Promise<unknown>>;
+      }
+    )._requestHandlers;
     const callToolHandler = handlers.get('tools/call');
 
     await expect(
@@ -153,13 +179,17 @@ describe('RedditMCPServer', () => {
           name: 'reddit_get_post',
           arguments: {},
         },
-      }),
+      })
     ).rejects.toThrow('Invalid parameters');
   });
 
   it('should throw on unknown tool', async () => {
     const internalServer = (server as unknown as { server: Server }).server;
-    const handlers = (internalServer as unknown as { _requestHandlers: Map<string, (req: unknown) => Promise<unknown>> })._requestHandlers;
+    const handlers = (
+      internalServer as unknown as {
+        _requestHandlers: Map<string, (req: unknown) => Promise<unknown>>;
+      }
+    )._requestHandlers;
     const callToolHandler = handlers.get('tools/call');
 
     await expect(
@@ -169,7 +199,7 @@ describe('RedditMCPServer', () => {
           name: 'reddit_nonexistent',
           arguments: {},
         },
-      }),
+      })
     ).rejects.toThrow('Unknown tool');
   });
 });

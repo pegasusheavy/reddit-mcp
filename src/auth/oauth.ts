@@ -82,7 +82,11 @@ export class TokenManager {
   private refreshBuffer = 5 * 60 * 1000; // 5 minutes before expiry
   private onTokenUpdate?: (token: StoredToken) => void;
 
-  constructor(oauth: RedditOAuth, token: StoredToken, onTokenUpdate?: (token: StoredToken) => void) {
+  constructor(
+    oauth: RedditOAuth,
+    token: StoredToken,
+    onTokenUpdate?: (token: StoredToken) => void
+  ) {
     this.oauth = oauth;
     this.token = token;
     this.onTokenUpdate = onTokenUpdate;

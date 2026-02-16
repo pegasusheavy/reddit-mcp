@@ -5,7 +5,7 @@ export class RedditAPIError extends Error {
   constructor(
     message: string,
     public statusCode?: number,
-    public response?: unknown,
+    public response?: unknown
   ) {
     super(message);
     this.name = 'RedditAPIError';
@@ -43,14 +43,14 @@ export class RedditClient {
           throw new RedditAPIError(
             error.response.data ? JSON.stringify(error.response.data) : 'Reddit API error',
             error.response.status,
-            error.response.data,
+            error.response.data
           );
         } else if (error.request) {
           throw new RedditAPIError('No response from Reddit API');
         } else {
           throw new RedditAPIError(`Request failed: ${error.message}`);
         }
-      },
+      }
     );
   }
 
@@ -71,10 +71,11 @@ export class RedditClient {
     return response.data;
   }
 
-  async search(query: string, options: { subreddit?: string; sort?: string; time?: string; limit?: number } = {}): Promise<unknown> {
-    const endpoint = options.subreddit
-      ? `/r/${options.subreddit}/search`
-      : '/search';
+  async search(
+    query: string,
+    options: { subreddit?: string; sort?: string; time?: string; limit?: number } = {}
+  ): Promise<unknown> {
+    const endpoint = options.subreddit ? `/r/${options.subreddit}/search` : '/search';
 
     const response = await this.client.get(endpoint, {
       params: {

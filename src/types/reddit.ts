@@ -41,13 +41,24 @@ export type RedditListing = z.infer<typeof RedditListingSchema>;
 
 export const GetPostSchema = z.object({
   postId: z.string().min(1).describe('The post ID (with or without t3_ prefix)'),
-  commentLimit: z.number().min(0).max(500).optional().describe('Max comments to return (default: 25)'),
-  commentSort: z.enum(['confidence', 'top', 'new', 'controversial', 'old', 'qa']).optional().describe('Comment sort order'),
+  commentLimit: z
+    .number()
+    .min(0)
+    .max(500)
+    .optional()
+    .describe('Max comments to return (default: 25)'),
+  commentSort: z
+    .enum(['confidence', 'top', 'new', 'controversial', 'old', 'qa'])
+    .optional()
+    .describe('Comment sort order'),
 });
 
 export const GetTopPostsSchema = z.object({
   subreddit: z.string().min(1).describe('Subreddit name (without r/ prefix)'),
-  time: z.enum(['hour', 'day', 'week', 'month', 'year', 'all']).optional().describe('Time period (default: day)'),
+  time: z
+    .enum(['hour', 'day', 'week', 'month', 'year', 'all'])
+    .optional()
+    .describe('Time period (default: day)'),
   limit: z.number().min(1).max(100).optional().describe('Number of posts (default: 10)'),
 });
 
@@ -79,21 +90,33 @@ export const CreatePostSchema = z.object({
 });
 
 export const ReplySchema = z.object({
-  thingId: z.string().min(1).describe('Full name of the post or comment to reply to (e.g. t3_abc123 or t1_xyz789)'),
+  thingId: z
+    .string()
+    .min(1)
+    .describe('Full name of the post or comment to reply to (e.g. t3_abc123 or t1_xyz789)'),
   text: z.string().min(1).describe('Reply text (markdown supported)'),
 });
 
 export const EditSchema = z.object({
-  thingId: z.string().min(1).describe('Full name of the post or comment to edit (e.g. t3_abc123 or t1_xyz789)'),
+  thingId: z
+    .string()
+    .min(1)
+    .describe('Full name of the post or comment to edit (e.g. t3_abc123 or t1_xyz789)'),
   text: z.string().min(1).describe('New text content (markdown supported)'),
 });
 
 export const DeleteSchema = z.object({
-  thingId: z.string().min(1).describe('Full name of the post or comment to delete (e.g. t3_abc123 or t1_xyz789)'),
+  thingId: z
+    .string()
+    .min(1)
+    .describe('Full name of the post or comment to delete (e.g. t3_abc123 or t1_xyz789)'),
 });
 
 export const VoteSchema = z.object({
-  thingId: z.string().min(1).describe('Full name of the post or comment to vote on (e.g. t3_abc123 or t1_xyz789)'),
+  thingId: z
+    .string()
+    .min(1)
+    .describe('Full name of the post or comment to vote on (e.g. t3_abc123 or t1_xyz789)'),
   direction: z.enum(['1', '0', '-1']).describe('Vote direction: 1=upvote, 0=unvote, -1=downvote'),
 });
 

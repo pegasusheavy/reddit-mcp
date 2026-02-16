@@ -27,7 +27,7 @@ export class RedditMCPServer {
   constructor() {
     this.server = new Server(
       { name: 'reddit-mcp', version: '1.0.0' },
-      { capabilities: { tools: {} } },
+      { capabilities: { tools: {} } }
     );
 
     this.setupHandlers();
@@ -53,8 +53,17 @@ export class RedditMCPServer {
             type: 'object',
             properties: {
               postId: { type: 'string', description: 'The post ID (with or without t3_ prefix)' },
-              commentLimit: { type: 'number', description: 'Max comments to return (default: 25)', minimum: 0, maximum: 500 },
-              commentSort: { type: 'string', enum: ['confidence', 'top', 'new', 'controversial', 'old', 'qa'], description: 'Comment sort order' },
+              commentLimit: {
+                type: 'number',
+                description: 'Max comments to return (default: 25)',
+                minimum: 0,
+                maximum: 500,
+              },
+              commentSort: {
+                type: 'string',
+                enum: ['confidence', 'top', 'new', 'controversial', 'old', 'qa'],
+                description: 'Comment sort order',
+              },
             },
             required: ['postId'],
           },
@@ -66,8 +75,17 @@ export class RedditMCPServer {
             type: 'object',
             properties: {
               subreddit: { type: 'string', description: 'Subreddit name (without r/ prefix)' },
-              time: { type: 'string', enum: ['hour', 'day', 'week', 'month', 'year', 'all'], description: 'Time period (default: day)' },
-              limit: { type: 'number', description: 'Number of posts (default: 10)', minimum: 1, maximum: 100 },
+              time: {
+                type: 'string',
+                enum: ['hour', 'day', 'week', 'month', 'year', 'all'],
+                description: 'Time period (default: day)',
+              },
+              limit: {
+                type: 'number',
+                description: 'Number of posts (default: 10)',
+                minimum: 1,
+                maximum: 100,
+              },
             },
             required: ['subreddit'],
           },
@@ -80,9 +98,22 @@ export class RedditMCPServer {
             properties: {
               query: { type: 'string', description: 'Search query' },
               subreddit: { type: 'string', description: 'Limit search to a subreddit' },
-              sort: { type: 'string', enum: ['relevance', 'hot', 'top', 'new', 'comments'], description: 'Sort order' },
-              time: { type: 'string', enum: ['hour', 'day', 'week', 'month', 'year', 'all'], description: 'Time period' },
-              limit: { type: 'number', description: 'Number of results (default: 10)', minimum: 1, maximum: 100 },
+              sort: {
+                type: 'string',
+                enum: ['relevance', 'hot', 'top', 'new', 'comments'],
+                description: 'Sort order',
+              },
+              time: {
+                type: 'string',
+                enum: ['hour', 'day', 'week', 'month', 'year', 'all'],
+                description: 'Time period',
+              },
+              limit: {
+                type: 'number',
+                description: 'Number of results (default: 10)',
+                minimum: 1,
+                maximum: 100,
+              },
             },
             required: ['query'],
           },
@@ -117,7 +148,10 @@ export class RedditMCPServer {
           inputSchema: {
             type: 'object',
             properties: {
-              subreddit: { type: 'string', description: 'Subreddit to post in (without r/ prefix)' },
+              subreddit: {
+                type: 'string',
+                description: 'Subreddit to post in (without r/ prefix)',
+              },
               title: { type: 'string', description: 'Post title' },
               text: { type: 'string', description: 'Post body text (for self posts)' },
               url: { type: 'string', description: 'URL (for link posts)' },
@@ -135,7 +169,10 @@ export class RedditMCPServer {
           inputSchema: {
             type: 'object',
             properties: {
-              thingId: { type: 'string', description: 'Full name of the post or comment (e.g. t3_abc123 or t1_xyz789)' },
+              thingId: {
+                type: 'string',
+                description: 'Full name of the post or comment (e.g. t3_abc123 or t1_xyz789)',
+              },
               text: { type: 'string', description: 'Reply text (markdown supported)' },
             },
             required: ['thingId', 'text'],
@@ -147,7 +184,10 @@ export class RedditMCPServer {
           inputSchema: {
             type: 'object',
             properties: {
-              thingId: { type: 'string', description: 'Full name of the post or comment (e.g. t3_abc123 or t1_xyz789)' },
+              thingId: {
+                type: 'string',
+                description: 'Full name of the post or comment (e.g. t3_abc123 or t1_xyz789)',
+              },
               text: { type: 'string', description: 'New text content (markdown supported)' },
             },
             required: ['thingId', 'text'],
@@ -159,7 +199,10 @@ export class RedditMCPServer {
           inputSchema: {
             type: 'object',
             properties: {
-              thingId: { type: 'string', description: 'Full name of the post or comment (e.g. t3_abc123 or t1_xyz789)' },
+              thingId: {
+                type: 'string',
+                description: 'Full name of the post or comment (e.g. t3_abc123 or t1_xyz789)',
+              },
             },
             required: ['thingId'],
           },
@@ -170,8 +213,15 @@ export class RedditMCPServer {
           inputSchema: {
             type: 'object',
             properties: {
-              thingId: { type: 'string', description: 'Full name of the post or comment (e.g. t3_abc123 or t1_xyz789)' },
-              direction: { type: 'string', enum: ['1', '0', '-1'], description: 'Vote direction: 1=upvote, 0=unvote, -1=downvote' },
+              thingId: {
+                type: 'string',
+                description: 'Full name of the post or comment (e.g. t3_abc123 or t1_xyz789)',
+              },
+              direction: {
+                type: 'string',
+                enum: ['1', '0', '-1'],
+                description: 'Vote direction: 1=upvote, 0=unvote, -1=downvote',
+              },
             },
             required: ['thingId', 'direction'],
           },
@@ -192,13 +242,21 @@ export class RedditMCPServer {
         switch (name) {
           case 'reddit_get_post': {
             const params = GetPostSchema.parse(args);
-            const result = await this.client.getPost(params.postId, params.commentLimit, params.commentSort);
+            const result = await this.client.getPost(
+              params.postId,
+              params.commentLimit,
+              params.commentSort
+            );
             return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
           }
 
           case 'reddit_get_top_posts': {
             const params = GetTopPostsSchema.parse(args);
-            const result = await this.client.getTopPosts(params.subreddit, params.time, params.limit);
+            const result = await this.client.getTopPosts(
+              params.subreddit,
+              params.time,
+              params.limit
+            );
             return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
           }
 

@@ -1,0 +1,51 @@
+name: Bug Report
+description: Report a bug with the Reddit MCP server
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this?
+      placeholder: |
+        1. Configure server with ...
+        2. Call tool `reddit_search` with ...
+        3. See error ...
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Error output
+      description: Paste any error messages or logs (redact tokens/secrets)
+      render: shell
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `pnpx @pegasusheavy/reddit-mcp-server --version` or package version
+    validations:
+      required: true
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      description: Output of `node --version`
+    validations:
+      required: true
+  - type: dropdown
+    id: auth-method
+    attributes:
+      label: Authentication method
+      options:
+        - OAuth (REDDIT_CLIENT_ID + REDDIT_CLIENT_SECRET)
+        - Manual token (REDDIT_ACCESS_TOKEN)
+    validations:
+      required: true
